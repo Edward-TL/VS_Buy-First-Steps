@@ -22,14 +22,14 @@ class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
 
         self.assertEqual(ml_status,200)
 
-    # def test_there_is_soup(self):
-    #     user_request = 'audifonos inalambricos'
-    #     country = 'mx'
-    #     ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+    def test_there_is_soup(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
 
-    #     ml_soup = extract_soup(ml_url, 1, just_soup=True)
+        ml_soup = extract_soup(ml_url, 1, just_soup=True)
 
-    #     self.assertIsNotNone(ml_soup)
+        self.assertIsNotNone(ml_soup)
 
 
 unittest.main()
