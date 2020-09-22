@@ -10,22 +10,6 @@ from Amazon.data_filters import get_stars, get_reviews, amazon_products_id
 
 class Test_Amazon_Properties_And_Functions(unittest.TestCase):
     #Replacers
-    def test_user_request_amazon_adaption(self):
-        user_request = 'audifonos inalambricos'
-        amz_user_request_edited = user_request.replace(' ', Amazon.space_replacer)
-
-        self.assertNotEqual(user_request, amz_user_request_edited)
-
-    def test_conection_status(self):
-        user_request = 'audifonos inalambricos'
-        amz_user_request_edited = user_request.replace(' ', Amazon.space_replacer)
-        amz_url = Amazon.url.replace(Amazon.url_replacers[0], '.mx')
-        amz_url = amz_url.replace(Amazon.url_replacers[1], amz_user_request_edited)
-
-        amz_status = extract_soup(amz_url, 0, just_status=True)
-
-        self.assertEqual(amz_status,200)
-
     def test_adapt_url(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
@@ -33,6 +17,14 @@ class Test_Amazon_Properties_And_Functions(unittest.TestCase):
 
         self.assertEqual(amz_url, 'https://www.amazon.com.mx/s?k=audifonos+inalambricos')
 
+    def test_conection_status(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
+        amz_url = Amazon.adapt_url(Amazon, country, user_request)
+
+        amz_status = extract_soup(amz_url, 0, just_status=True)
+
+        self.assertEqual(amz_status,200)
 
     def test_there_is_soup(self):
         user_request = 'audifonos inalambricos'
