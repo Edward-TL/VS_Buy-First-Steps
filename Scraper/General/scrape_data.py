@@ -65,9 +65,9 @@ class Page:
 
         adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
         
-        # for r in range(1, len(Page.url_replacers)):
-        user_request_adapted = user_request.replace(' ', Page.space_replacer)
-        adapted_url = adapted_url.replace(Page.url_replacers[1], user_request_adapted)
+        for r in range(1, len(Page.url_replacers)):
+            user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
+            adapted_url = adapted_url.replace(Page.url_replacers[1], user_request_adapted)
         
 
         return adapted_url
@@ -81,7 +81,7 @@ class Products:
         
 Amazon = Page(url='https://www.amazon.com{country}/s?k={user_request}',
     url_replacers=('{country}', '{user_request}'),
-    space_replacer='+',
+    space_replacer=['+'],
     boxes=('div', 'data-component-type', 's-search-result'),
     highlights=('div', 'class', 'a-row a-badge-region'),
     product_urls=('a', 'class', 'a-link-normal a-text-normal'),
@@ -97,7 +97,7 @@ coins_dict = {'mx':1,
 
 Mercado_Libre = Page(url='https://listado.mercadolibre.com.{country}/{user_request}#D[A:{user_request}]',
     url_replacers=('{country}', '{user_request}'),
-    space_replacer='%20',
+    space_replacer=['%20'],
     boxes=('div', 'class', 'ui-search-result__wrapper'),
     highlights=('span', 'class', 'ui-search-item__highlight-label__text'),
     product_urls=('a', 'class', 'a-link-normal a-text-normal'),
