@@ -6,12 +6,6 @@ from Amazon.data_filters import get_names, get_images, get_products_urls, get_pr
 
 
 class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
-    def test_user_request_ml_adaption(self):
-        user_request = 'audifonos inalambricos'
-        ml_user_request_edited = user_request.replace(' ', Mercado_Libre.space_replacer)
-
-        self.assertNotEqual(user_request, ml_user_request_edited)
-
     def test_adapt_url(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
