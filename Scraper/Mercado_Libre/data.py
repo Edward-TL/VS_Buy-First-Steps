@@ -1,4 +1,3 @@
-
 class headers:
     wallmart = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                 'accept-encoding':'gzip, deflate, br',
@@ -72,6 +71,13 @@ class Page:
 
         return adapted_url
 
+class Products:
+    def __init__(self, names, images_links, products_links, prices):
+        self.names = names
+        self.images = images_links
+        self.products_links = products_links
+        self.prices = prices
+
 coins_dict = {'mx':1,
                 'br':2,}
 
@@ -85,4 +91,7 @@ Mercado_Libre = Page(url='https://listado.mercadolibre.com{country}/{user_reques
     reviews=None,
     stars=None,
     price=('span', 'class', 'price-tag ui-search-price__part'),)
+
+if __name__ == '__main__':
+    print(Mercado_Libre)
 
