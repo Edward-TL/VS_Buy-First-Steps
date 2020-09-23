@@ -58,17 +58,22 @@ class Page:
         self.price = price
         
     
-    def adapt_url(self, Page, country_domain, user_request):
-        if country_domain[0] != ".":
-            country_domain = '.' + country_domain
-
-        adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
+    def adapt_url(self, Page, user_request, country_domain=None):
+        check = str(type(Page.url_replacers))
+        if country_domain  and check != "<class 'str'>":
+            if country_domain[0] != ".":
+                country_domain = '.' + country_domain
         
-        for r in range(1, len(Page.url_replacers)):
-            user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
-            adapted_url = adapted_url.replace(Page.url_replacers[r], user_request_adapted)
         
-
+        if check != "<class 'str'>":
+            adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
+            for r in range(1, len(Page.url_replacers)):
+                user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
+                adapted_url = adapted_url.replace(Page.url_replacers[r], user_request_adapted)
+        else:
+            user_request_adapted = user_request.replace(' ', Page.space_replacer[0])
+            adapted_url = Page.url.replace(Page.url_replacers, user_request_adapted)
+        
         return adapted_url
 
 class Products:
@@ -81,9 +86,9 @@ class Products:
 coins_dict = {'mx':1,
                 'br':2,}
 
-Mercado_Libre = Page(url='https://listado.mercadolibre.com{country}/{user_request_1}#D[A:{user_request_2}]',
-    url_replacers=('{country}', '{user_request_1}', '{user_request_2}'),
-    space_replacer=['-','%20'],
+Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
+    url_replacers=('{user_request}'),
+    space_replacer=['+'],
     boxes=('div', 'class', 'ui-search-result__wrapper'),
     highlights=('span', 'class', 'ui-search-item__highlight-label__text'),
     product_urls=('div', 'class', 'ui-search-result__image'),
@@ -93,5 +98,6 @@ Mercado_Libre = Page(url='https://listado.mercadolibre.com{country}/{user_reques
     price=('span', 'class', 'price-tag ui-search-price__part'),)
 
 if __name__ == '__main__':
-    print(Mercado_Libre)
+    url = Ebay.adapt_url(Ebay, 'audifonos inalambricos')
+    print(url)
 
