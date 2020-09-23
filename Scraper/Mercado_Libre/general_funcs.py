@@ -7,7 +7,7 @@ def ordered_dict(dictionary, reverse=True):
 
     return ordered_dict
 
-def cheapest(array_prices, just_position=False, just_price=False, test=False):
+def cheapest(array_prices, just_position=True, just_price=False, position_and_price=False, test=False):
     cheapest_position = 0
     cheapest_price = array_prices[0]
 
@@ -23,12 +23,14 @@ def cheapest(array_prices, just_position=False, just_price=False, test=False):
             cheapest_price = price
             cheapest_position = n
         
-    if just_position == True:
+    if position_and_price == True:
+        just_position = False
+        return cheapest_position, cheapest_price
+    elif just_position == True:
         return cheapest_position
     elif just_price == True:
         return cheapest_price
-    else:
-        return cheapest_position, cheapest_price
+
 
 def get_cheapest(cheapest_idx, products, cheapest_price=None, country=None, Page=None):
     products_type = str(type(products))
@@ -40,20 +42,22 @@ def get_cheapest(cheapest_idx, products, cheapest_price=None, country=None, Page
             cheapest_dict['url'] = get_products_urls(products, Page.product_urls, position=cheapest_idx)
             cheapest_dict['price'] = cheapest_price
         else:
-            if not country and Page:
+            if not country:
                 raise ValueError("Missing country value")
-            elif country and not Page:
+            elif not Page:
                 raise ValueError("Missing Page object")
+            elif not cheapest_price:
+                raise ValueError("Missing cheapest_price value (int)")
             else:
                 raise ValueError(f'''Missing Page and country values.
             You can use this function with a dictionary with all the data preloaded as well''')
-    elif products_type == dict:
+    elif products_type == "<class 'dict'>":
         cheapest_dict = {}
         products_dictionary = products
         for key in products_dictionary:
-            cheapest_dict[key] = products_dictionary[key][cheapest]
+            cheapest_dict[key] = products_dictionary[key][cheapest_idx]
     else:
-        error_in_product_type =  f"Products type must be a dict or a list with the boxes. Recived {type(products)}"
+        error_in_product_type =  f"Products type must be a dict or a bs4.element.ResultSet with the boxes. Recived {type(products)}"
         raise ValueError(error_in_product_type)
     
     return cheapest_dict
