@@ -14,23 +14,23 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
 
         self.assertEqual(ebay_url, 'https://www.ebay.com/sch/i.html?_nkw=audifonos+inalambricos')
 
-    # def test_Ebay_conection_status(self):
-    #     user_request = 'audifonos inalambricos'
-    #     country = 'mx'
-    #     ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+    def test_Ebay_conection_status(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
+        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
 
-    #     ml_status = extract_soup(ml_url, 0, just_status=True)
+        ebay_status = extract_soup(ebay_url, 0, just_status=True)
 
-    #     self.assertEqual(ml_status,200)
+        self.assertEqual(ebay_status,200)
 
-    # def test_there_is_soup(self):
-    #     user_request = 'audifonos inalambricos'
-    #     country = 'mx'
-    #     ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+    def test_there_is_soup(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
+        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
 
-    #     ml_soup = extract_soup(ml_url, 1, just_soup=True)
+        ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
 
-    #     self.assertIsNotNone(ml_soup)
+        self.assertIsNotNone(ebay_soup)
 
     # def test_get_brute_info_including_Nones(self):
     #     user_request = 'audifonos inalambricos'
