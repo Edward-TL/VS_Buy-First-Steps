@@ -91,6 +91,7 @@ def get_products_urls(boxes_array, info_tuple, test_all=False, test_len=False, p
 def get_price(country, boxes_array, info_tuple, test_all=False, test_len=False, position=None):
     price = [None]*len(boxes_array)
     coin_symbol = coins_dict[country]
+    price_string = 'start'
 
     '''If you know want to know some info of an specific product by its position on the page.
     Like you know the position of the cheapest'''
@@ -114,12 +115,36 @@ def get_price(country, boxes_array, info_tuple, test_all=False, test_len=False, 
         for box in boxes_array:
             #Remember that boxes are arrays
             searcher = search_boxes(box, info_tuple)
+            # if test_all == True:
+            #     print(searcher)
             if searcher:
                 if country == 'mx':
                     try:
-                        price[b] = float(searcher[0].get_text()[coin_symbol:].replace(',',''))
+                        # if test_all == True:
+                        #     print(searcher[0].get_text()[coin_symbol:])
+                        string_price = searcher[0].get_text()[coin_symbol:].replace(',','')
+                        string_price = string_price.replace(" ", "") 
+                        price[b] = float(string_price)
                     except:
-                        pass
+                        price_string = searcher[0].get_text()[coin_symbol:]
+                        slot = 0
+                        space_searcher = 'start'
+                        while space_searcher != ' ' and slot < len(price_string):
+                            space_searcher = price_string[slot]
+                            # if test_all == True:
+                            #     print(space_searcher)
+                            slot += 1
+                    
+                        if slot == len(price_string):
+                            error_message = f'''String index out of range. 
+                            String: {price_string}
+                            Original String: {string_price}
+                            Box #{b}'''
+                            raise ValueError(error_message)
+
+                        space = coin_symbol + slot
+                        price[b] = float(searcher[0].get_text()[coin_symbol:space].replace(',',''))
+                        
                 elif country == 'br':
                     try:
                         price[b] = float(searcher[0].get_text()[coin_symbol:].replace('.','').replace(',','.'))
@@ -128,7 +153,7 @@ def get_price(country, boxes_array, info_tuple, test_all=False, test_len=False, 
             b +=1
 
     if test_all == True:
-        print(price)
+        print('prices:', len(price), price)
     
     elif test_len == True:
         print('prices:', len(price))
