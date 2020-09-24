@@ -32,48 +32,48 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
 
         self.assertIsNotNone(ebay_soup)
 
-    # def test_get_brute_info_including_Nones(self):
-    #     user_request = 'audifonos inalambricos'
-    #     country = 'mx'
-    #     ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
-    #     ml_soup = extract_soup(ml_url, 1, just_soup=True)
+    def test_get_brute_info_including_Nones(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
+        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
         
-    #     #New test
-    #     ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
+        #New test
+        ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
         
-    #     self.assertIsNotNone(len(ml_boxes))
+        self.assertIsNotNone(len(ebay_boxes))
 
-    # def test_products_info_getters(self):
-    #     user_request = 'audifonos inalambricos'
-    #     country = 'mx'
-    #     ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
-    #     ml_soup = extract_soup(ml_url, 1, just_soup=True)
-    #     ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
+    def test_products_info_getters(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
+        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
+        ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
 
-    #     getters = {'ml_names' : len(get_names(ml_boxes, Mercado_Libre.name_and_images)),
-    #     'ml_images' : len(get_images(ml_boxes, Mercado_Libre.name_and_images)),
-    #     'ml_urls' : len(get_products_urls(ml_boxes, Mercado_Libre.product_urls)),
-    #     'ml_price' : len(get_price(country, ml_boxes, Mercado_Libre.price)),
-    #     }
+        getters = {'ebay_names' : len(get_names(ebay_boxes, Ebay.name_and_images)),
+        'ebay_images' : len(get_images(ebay_boxes, Ebay)),
+        'ebay_urls' : len(get_products_urls(ebay_boxes, Ebay.product_urls)),
+        # 'ebay_price' : len(get_price(country, ebay_boxes, Ebay.price)),
+        }
         
-    #     for value in getters:
-    #         self.assertEqual(len(ml_boxes), getters[value])
+        for value in getters:
+            self.assertEqual(len(ebay_boxes), getters[value])
     
     
 
-    # def test_cheapest_gets_info(self):
-    #     user_request = 'audifonos inalambricos'
-    #     country = 'mx'
+    def test_cheapest_gets_info(self):
+        user_request = 'audifonos inalambricos'
+        country = 'mx'
 
-    #     ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
-    #     ml_soup = extract_soup(ml_url, 1, just_soup=True)
-    #     ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
-    #     meli_prices= get_price(country, ml_boxes, Mercado_Libre.price)
+        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
+        ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
+        ebay_prices= get_price(country, ebay_boxes, Ebay.price)
 
-    #     meli_cheapest_idx, meli_cheapest_price = cheapest(meli_prices, position_and_price=True)
-    #     cheapest_ml_product_1 = get_cheapest(meli_cheapest_idx, ml_boxes, meli_cheapest_price, country, Mercado_Libre)
+        ebay_cheapest_idx, ebay_cheapest_price = cheapest(ebay_prices, position_and_price=True)
+        cheapest_ebay_product_1 = get_cheapest(ebay_cheapest_idx, ebay_boxes, ebay_cheapest_price, country, Ebay)
 
-    #     for value in cheapest_ml_product_1:
-    #         self.assertIsNotNone(cheapest_ml_product_1[value])
+        for value in cheapest_ebay_product_1:
+            self.assertIsNotNone(cheapest_ebay_product_1[value])
 
 unittest.main()
