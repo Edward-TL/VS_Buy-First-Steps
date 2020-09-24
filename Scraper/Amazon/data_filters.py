@@ -1,7 +1,5 @@
-import General
-
-from General.scrape_funcs import search_boxes
-from General.scrape_data import coins_dict
+from scrape_funcs import search_boxes
+from data import money_dict
 
 
 def get_names(boxes_array, info_tuple, test=False):
@@ -62,15 +60,15 @@ def get_price(country, boxes_array, info_tuple, test=False):
         print(price)
     return price
 
-def get_products_urls(boxes_array, info_tuple, test=False):
+def get_products_urls(boxes_array, Page, test=False):
     urls = [None]*len(boxes_array)
-
+    url = Page.url_get
     b=0
     for box in boxes_array:
         #Remember that boxes are arrays
         searcher = search_boxes(box, info_tuple)
         if searcher:
-            source_url = searcher[0].get('href')
+            source_url = searcher[0].get(url)
             urls[b] = 'https://www.amazon.com.mx' + source_url
             
         b +=1

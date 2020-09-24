@@ -1,4 +1,3 @@
-
 class headers:
     wallmart = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                 'accept-encoding':'gzip, deflate, br',
@@ -34,8 +33,9 @@ class headers:
 
 
 class Page:
-    def __init__(self, url, url_replacers, space_replacer ,boxes, highlights,
-    product_urls, name_and_images, reviews, stars, price):
+    def __init__(self, __name__, url, url_replacers, space_replacer ,boxes, highlights,
+    product_urls, name_and_images, images_get, url_get, reviews, stars, price):
+        self.__name__ = __name__
         '''Page URl with name of the format replacers'''
         self.url = url 
 
@@ -54,23 +54,30 @@ class Page:
         self.product_urls = product_urls
         # self.product_id = product_id
         self.name_and_images = name_and_images
+        self.images_get = images_get
+        self.url_get = url_get
         self.reviews = reviews
         self.stars = stars
         self.price = price
         
     
-    def adapt_url(self, Page, country_domain, user_request):
+    def adapt_url(self, Page, user_request, country_domain):
+        check = str(type(Page.url_replacers))
         if country_domain[0] != ".":
             country_domain = '.' + country_domain
-
-        adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
         
-        for r in range(1, len(Page.url_replacers)):
-            user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
-            adapted_url = adapted_url.replace(Page.url_replacers[1], user_request_adapted)
         
-
+        if check != "<class 'str'>":
+            adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
+            for r in range(1, len(Page.url_replacers)):
+                user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
+                adapted_url = adapted_url.replace(Page.url_replacers[r], user_request_adapted)
+        else:
+            user_request_adapted = user_request.replace(' ', Page.space_replacer[0])
+            adapted_url = Page.url.replace(Page.url_replacers, user_request_adapted)
+        
         return adapted_url
+
 
 class Products:
     def __init__(self, names, images_links, products_links, prices):
@@ -79,13 +86,16 @@ class Products:
         self.products_links = products_links
         self.prices = prices
         
-Amazon = Page(url='https://www.amazon.com{country}/s?k={user_request}',
+Amazon = Page(__name__ = 'Amazon',
+    url='https://www.amazon.com{country}/s?k={user_request}',
     url_replacers=('{country}', '{user_request}'),
     space_replacer=['+'],
     boxes=('div', 'data-component-type', 's-search-result'),
     highlights=('div', 'class', 'a-row a-badge-region'),
     product_urls=('a', 'class', 'a-link-normal a-text-normal'),
     name_and_images=('div', 'class', 'a-section aok-relative s-image-square-aspect'),
+    images_get=('src'),
+    url_get=('href'),
     reviews=('span', 'class', 'a-size-base'),
     stars=('span', 'class', 'a-icon-alt'),
     price=('span', 'class', 'a-offscreen'),
@@ -95,8 +105,11 @@ Amazon = Page(url='https://www.amazon.com{country}/s?k={user_request}',
 coins_dict = {'mx':1,
                 'br':2,}
 
+
+money_dict = {'mx' : {'coin' : '$',
+                      'thousands': ',',
+                      'decimal': '.',
+                      'two_prices_sep' : ' - '}
+            }
 if __name__ == '__main__':
-    user_request = 'audifonos inalambricos'
-    country = 'mx'
-    amz_url = Amazon.adapt_url(Amazon, country, user_request)
-    print(amz_url)
+    print(Amazon.__name__)
