@@ -38,10 +38,11 @@ def cheapest(array_prices, just_position=True, just_price=False, position_and_pr
 def get_cheapest(cheapest_idx, products, cheapest_price=None, country=None, Page=None):
     products_type = str(type(products))
     if products_type == "<class 'bs4.element.ResultSet'>":
+        
         if country and Page:
             cheapest_dict = {}
             cheapest_dict['name'] = get_names(products, Page.name_and_images, position=cheapest_idx)
-            cheapest_dict['image'] = get_images(products, Page.name_and_images, position=cheapest_idx)
+            cheapest_dict['image'] = get_images(products, Page, position=cheapest_idx)
             cheapest_dict['url'] = get_products_urls(products, Page.product_urls, position=cheapest_idx)
             cheapest_dict['price'] = cheapest_price
         else:
@@ -54,6 +55,7 @@ def get_cheapest(cheapest_idx, products, cheapest_price=None, country=None, Page
             else:
                 raise ValueError(f'''Missing Page and country values.
             You can use this function with a dictionary with all the data preloaded as well''')
+            
     elif products_type == "<class 'dict'>":
         cheapest_dict = {}
         products_dictionary = products
