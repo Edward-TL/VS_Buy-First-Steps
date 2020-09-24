@@ -27,7 +27,7 @@ def scraper(Page, user_request, country):
 if __name__ == "__main__":
     user_request = 'audifonos inalambricos'
     country = 'mx'
-    ebay_url = Ebay.adapt_url(Ebay, user_request)
+    ebay_url = Ebay.adapt_url(Ebay, user_request, country)
 
     #All the HTML of the page
     ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # #Ebay's images source (link)
     ebay_products['images'] = get_images(ebay_boxes, Ebay)
 
-    ebay_products['urls'] = get_products_urls(ebay_boxes, Ebay.product_urls)
+    ebay_products['urls'] = get_products_urls(ebay_boxes, Ebay)
     ebay_products['prices'] = get_price(country, ebay_boxes, Ebay.price)
 
     cheapest_idx = cheapest(ebay_products['prices'])

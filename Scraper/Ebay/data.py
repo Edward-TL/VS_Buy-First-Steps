@@ -33,8 +33,9 @@ class headers:
 
 
 class Page:
-    def __init__(self, url, url_replacers, space_replacer ,boxes, highlights,
-    product_urls, name_and_images, images_get, reviews, stars, price):
+    def __init__(self, __name__, url, url_replacers, space_replacer ,boxes, highlights,
+    product_urls, name_and_images, images_get, url_get, reviews, stars, price):
+        self.__name__ = __name__
         '''Page URl with name of the format replacers'''
         self.url = url 
 
@@ -54,6 +55,7 @@ class Page:
         # self.product_id = product_id
         self.name_and_images = name_and_images
         self.images_get = images_get
+        self.url_get = url_get
         self.reviews = reviews
         self.stars = stars
         self.price = price
@@ -89,7 +91,8 @@ money_dict = {'mx' : {'coin' : 'MXN $',
                       'two_prices_sep' : ' a '}
             }
 
-Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
+Ebay = Page(__name__='Ebay',
+    url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
     url_replacers=('{user_request}'),
     space_replacer=['+'],
     boxes=('li', 'class', 's-item'),
@@ -97,6 +100,7 @@ Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
     product_urls=('div', 'class', 's-item__image'),
     name_and_images=('div', 'class', 's-item__image-wrapper'),
     images_get=('src'),
+    url_get=('href'),
     reviews=None,
     stars=None,
     price=('span', 'class', 's-item__price'),)

@@ -61,24 +61,32 @@ def get_images(boxes_array, Page, test_all=False, test_len=False, position=None)
 
     return images
 
-def get_products_urls(boxes_array, info_tuple, test_all=False, test_len=False, position=None):
+def get_products_urls(boxes_array, Page, test_all=False, test_len=False, position=None):
     urls = [None]*len(boxes_array)
+    url = Page.url_get
 
     '''If you know want to know some info of an specific product by its position on the page.
     Like you know the position of the cheapest'''
     if position:
-        searcher = search_boxes(boxes_array[position], info_tuple)
+        searcher = search_boxes(boxes_array[position], Page.product_urls)
         if searcher:
-            urls = searcher[0].a.get('href')
+            urls = searcher[0].a.get(url)
             
     else:
         '''For Testing the functions and Xpaths'''
         b=0
         for box in boxes_array:
             #Remember that boxes are arrays
-            searcher = search_boxes(box, info_tuple)
+            searcher = search_boxes(box, Page.product_urls)
             if searcher:
-                urls[b] = searcher[0].a.get('href')
+                if test_all == True:
+                    print(searcher[0].get(url))
+                if Page.__name__ == 'Amazon':
+                    source_url = searcher[0].get(url)
+                    urls[b] = 'https://www.amazon.com.mx' + source_url
+                    
+                if Page.__name__ == 'Ebay' or Page.__name__ == 'Mercado Libre':
+                    urls[b] = searcher[0].a.get(url)
             b +=1
 
     if test_all == True:
