@@ -17,7 +17,7 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
     def test_Ebay_conection_status(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_url = Ebay.adapt_url(Ebay, user_request, country)
 
         ebay_status = extract_soup(ebay_url, 0, just_status=True)
 
@@ -26,7 +26,7 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
     def test_there_is_soup(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_url = Ebay.adapt_url(Ebay, user_request, country)
 
         ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
 
@@ -35,7 +35,7 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
     def test_get_brute_info_including_Nones(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_url = Ebay.adapt_url(Ebay, user_request, country)
         ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
         
         #New test
@@ -46,13 +46,13 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
     def test_products_info_getters(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_url = Ebay.adapt_url(Ebay, user_request, country)
         ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
         ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
 
         getters = {'ebay_names' : len(get_names(ebay_boxes, Ebay.name_and_images)),
         'ebay_images' : len(get_images(ebay_boxes, Ebay)),
-        'ebay_urls' : len(get_products_urls(ebay_boxes, Ebay.product_urls)),
+        'ebay_urls' : len(get_products_urls(ebay_boxes, Ebay)),
         # 'ebay_price' : len(get_price(country, ebay_boxes, Ebay.price)),
         }
         
@@ -65,7 +65,7 @@ class Test_Ebay_Properties_And_Functions(unittest.TestCase):
         user_request = 'audifonos inalambricos'
         country = 'mx'
 
-        ebay_url = Ebay.adapt_url(Ebay, country, user_request)
+        ebay_url = Ebay.adapt_url(Ebay, user_request, country)
         ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
         ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
         ebay_prices= get_price(country, ebay_boxes, Ebay.price)
