@@ -40,6 +40,7 @@ def get_images(boxes_array, Page, test_all=False, test_len=False, position=None)
     Like you know the position of the cheapest'''
     if position:
         searcher = search_boxes(boxes_array[position], Page.name_and_images)
+
         if searcher:
             images = searcher[0].img.get(Page.images_get)
     else:
@@ -122,29 +123,16 @@ def get_price(country, boxes_array, info_tuple, test_all=False, test_len=False, 
                     try:
                         # if test_all == True:
                         #     print(searcher[0].get_text()[coin_symbol:])
-                        string_price = searcher[0].get_text()[coin_symbol:].replace(',','')
-                        string_price = string_price.replace(" ", "") 
-                        price[b] = float(string_price)
+                        string_price = searcher[0].get_text().replace(coin_symbol,'')
+                        string_price = string_price.split()
+                        price[b] = float(string_price[0])
                     except:
-                        price_string = searcher[0].get_text()[coin_symbol:]
-                        slot = 0
-                        space_searcher = 'start'
-                        while space_searcher != ' ' and slot < len(price_string):
-                            space_searcher = price_string[slot]
-                            # if test_all == True:
-                            #     print(space_searcher)
-                            slot += 1
-                    
-                        if slot == len(price_string):
-                            error_message = f'''String index out of range. 
-                            String: {price_string}
-                            Original String: {string_price}
-                            Box #{b}'''
-                            raise ValueError(error_message)
-
-                        space = coin_symbol + slot
-                        price[b] = float(searcher[0].get_text()[coin_symbol:space].replace(',',''))
-                        
+                        error_message = f'''String index out of range. 
+                        Coin Symbol: {coin_symbol}
+                        Coin dictionary: {coins_dict}
+                        Original String: {searcher[0].get_text()}
+                        Box #{b}'''
+                        raise ValueError(error_message)                        
                 elif country == 'br':
                     try:
                         price[b] = float(searcher[0].get_text()[coin_symbol:].replace('.','').replace(',','.'))
