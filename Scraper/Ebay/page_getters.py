@@ -3,6 +3,8 @@ from data import coins_dict
 
 def get_names(boxes_array, info_tuple, test_all=False, test_len=False, position=None):
     names = [None]*len(boxes_array)
+    if test_all == True:
+            print(f'Boxes array len: {len(boxes_array)}')
 
     '''If you know want to know some info of an specific product by its position on the page.
     Like you know the position of the cheapest'''
@@ -13,6 +15,8 @@ def get_names(boxes_array, info_tuple, test_all=False, test_len=False, position=
     else:
         '''For Testing the functions and Xpaths'''
         b=0
+        if test_all == True:
+            print('For Loop')
         for box in boxes_array:
             #Remember that boxes are arrays
             searcher = search_boxes(box, info_tuple)
@@ -29,23 +33,23 @@ def get_names(boxes_array, info_tuple, test_all=False, test_len=False, position=
     return names
 
 
-def get_images(boxes_array, info_tuple, test_all=False, test_len=False, position=None):
+def get_images(boxes_array, Page, test_all=False, test_len=False, position=None):
     images = [None]*len(boxes_array)
     
     '''If you know want to know some info of an specific product by its position on the page.
     Like you know the position of the cheapest'''
     if position:
-        searcher = search_boxes(boxes_array[position], info_tuple)
+        searcher = search_boxes(boxes_array[position], Page.name_and_images)
         if searcher:
-            images = searcher[0].img.get('data-src')
+            images = searcher[0].img.get(Page.images_get)
     else:
         '''For Testing the functions and Xpaths'''
         b=0
         for box in boxes_array:
             #Remember that boxes are arrays
-            searcher = search_boxes(box, info_tuple)
+            searcher = search_boxes(box, Page.name_and_images)
             if searcher:
-                images[b] = searcher[0].img.get('data-src')
+                images[b] = searcher[0].img.get(Page.images_get)
             b +=1
 
     if test_all == True:
