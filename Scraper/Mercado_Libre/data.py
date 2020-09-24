@@ -33,8 +33,9 @@ class headers:
 
 
 class Page:
-    def __init__(self, url, url_replacers, space_replacer ,boxes, highlights,
-    product_urls, name_and_images, reviews, stars, price):
+    def __init__(self, __name__, url, url_replacers, space_replacer ,boxes, highlights,
+    product_urls, name_and_images, images_get, url_get, reviews, stars, price):
+        self.__name__ = __name__
         '''Page URl with name of the format replacers'''
         self.url = url 
 
@@ -53,22 +54,28 @@ class Page:
         self.product_urls = product_urls
         # self.product_id = product_id
         self.name_and_images = name_and_images
+        self.images_get = images_get
+        self.url_get = url_get
         self.reviews = reviews
         self.stars = stars
         self.price = price
         
     
-    def adapt_url(self, Page, country_domain, user_request):
+    def adapt_url(self, Page, user_request, country_domain=None):
+        check = str(type(Page.url_replacers))
         if country_domain[0] != ".":
             country_domain = '.' + country_domain
-
-        adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
         
-        for r in range(1, len(Page.url_replacers)):
-            user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
-            adapted_url = adapted_url.replace(Page.url_replacers[r], user_request_adapted)
         
-
+        if check != "<class 'str'>":
+            adapted_url = Page.url.replace(Page.url_replacers[0], country_domain)
+            for r in range(1, len(Page.url_replacers)):
+                user_request_adapted = user_request.replace(' ', Page.space_replacer[r-1])
+                adapted_url = adapted_url.replace(Page.url_replacers[r], user_request_adapted)
+        else:
+            user_request_adapted = user_request.replace(' ', Page.space_replacer[0])
+            adapted_url = Page.url.replace(Page.url_replacers, user_request_adapted)
+        
         return adapted_url
 
 class Products:
@@ -81,13 +88,22 @@ class Products:
 coins_dict = {'mx':1,
                 'br':2,}
 
-Mercado_Libre = Page(url='https://listado.mercadolibre.com{country}/{user_request_1}#D[A:{user_request_2}]',
+money_dict = {'mx' : {'coin' : '$',
+                      'thousands': ',',
+                      'decimal': '.',
+                      'two_prices_sep' : ' - '}
+            }
+            
+Mercado_Libre = Page(__name__='Mercado Libre',
+    url='https://listado.mercadolibre.com{country}/{user_request_1}#D[A:{user_request_2}]',
     url_replacers=('{country}', '{user_request_1}', '{user_request_2}'),
     space_replacer=['-','%20'],
     boxes=('div', 'class', 'ui-search-result__wrapper'),
     highlights=('span', 'class', 'ui-search-item__highlight-label__text'),
     product_urls=('div', 'class', 'ui-search-result__image'),
     name_and_images=('div', 'class', 'slick-slide slick-active'),
+    images_get='data-src',
+    url_get='href',
     reviews=None,
     stars=None,
     price=('span', 'class', 'price-tag ui-search-price__part'),)

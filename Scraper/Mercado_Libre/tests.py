@@ -10,14 +10,14 @@ class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
     def test_adapt_url(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, user_request, country)
 
         self.assertEqual(ml_url, 'https://listado.mercadolibre.com.mx/audifonos-inalambricos#D[A:audifonos%20inalambricos]')
 
     def test_mercado_libre_conection_status(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, user_request, country)
 
         ml_status = extract_soup(ml_url, 0, just_status=True)
 
@@ -26,7 +26,7 @@ class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
     def test_there_is_soup(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, user_request, country)
 
         ml_soup = extract_soup(ml_url, 1, just_soup=True)
 
@@ -35,7 +35,7 @@ class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
     def test_get_brute_info_including_Nones(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, user_request, country)
         ml_soup = extract_soup(ml_url, 1, just_soup=True)
         
         #New test
@@ -46,13 +46,13 @@ class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
     def test_products_info_getters(self):
         user_request = 'audifonos inalambricos'
         country = 'mx'
-        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, user_request, country)
         ml_soup = extract_soup(ml_url, 1, just_soup=True)
         ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
 
         getters = {'ml_names' : len(get_names(ml_boxes, Mercado_Libre.name_and_images)),
-        'ml_images' : len(get_images(ml_boxes, Mercado_Libre.name_and_images)),
-        'ml_urls' : len(get_products_urls(ml_boxes, Mercado_Libre.product_urls)),
+        'ml_images' : len(get_images(ml_boxes, Mercado_Libre)),
+        'ml_urls' : len(get_products_urls(ml_boxes, Mercado_Libre)),
         'ml_price' : len(get_price(country, ml_boxes, Mercado_Libre.price)),
         }
         
@@ -65,7 +65,7 @@ class Test_Mercado_Libre_Properties_And_Functions(unittest.TestCase):
         user_request = 'audifonos inalambricos'
         country = 'mx'
 
-        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+        ml_url = Mercado_Libre.adapt_url(Mercado_Libre, user_request, country)
         ml_soup = extract_soup(ml_url, 1, just_soup=True)
         ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
         meli_prices= get_price(country, ml_boxes, Mercado_Libre.price)
