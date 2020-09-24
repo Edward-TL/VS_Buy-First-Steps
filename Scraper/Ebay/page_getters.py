@@ -1,6 +1,5 @@
 from scrape_funcs import search_boxes
-from data import coins_dict
-
+from data import money_dict
 def get_names(boxes_array, info_tuple, test_all=False, test_len=False, position=None):
     names = [None]*len(boxes_array)
     if test_all == True:
@@ -91,7 +90,10 @@ def get_products_urls(boxes_array, info_tuple, test_all=False, test_len=False, p
 
 def get_price(country, boxes_array, info_tuple, test_all=False, test_len=False, position=None):
     price = [None]*len(boxes_array)
-    coin_symbol = coins_dict[country]
+    coin_symbol = money_dict[country]['coin']
+    k_sep = money_dict[country]['thousands']
+    d_sep = money_dict[country]['decimal']
+    tps = money_dict[country]['two_prices_sep']
     price_string = 'start'
 
     '''If you know want to know some info of an specific product by its position on the page.
@@ -99,45 +101,46 @@ def get_price(country, boxes_array, info_tuple, test_all=False, test_len=False, 
     if position:
         searcher = search_boxes(boxes_array[position], info_tuple)
         if searcher:
-            if country == 'mx':
-                try:
-                    price = float(searcher[0].get_text()[coin_symbol:].replace(',',''))
-                except:
-                    pass
-            elif country == 'br':
-                try:
-                    price = float(searcher[0].get_text()[coin_symbol:].replace('.','').replace(',','.'))
-                except:
-                    pass
-            
+            try:
+                price_string = searcher[0].get_text().split(tps)
+                price_string = price_string[0].replace(coin_symbol,'').replace(k_sep,'').replace(d_sep,'.')
+                #Special case
+                price_string = price_string.replace('\xa0','')
+                price = float(price_string)
+            except:
+                error_message = f'''String index out of range. 
+                Money dictionary: {money_dict}
+                Original String: {searcher[0].get_text()}
+                Box #{position}'''
+                raise ValueError(error_message)     
+        
     #For Testing the functions and Xpaths
     else:
         b=0
         for box in boxes_array:
             #Remember that boxes are arrays
             searcher = search_boxes(box, info_tuple)
-            # if test_all == True:
-            #     print(searcher)
+            if test_all == True:
+                print(searcher)
             if searcher:
                 if country == 'mx':
                     try:
-                        # if test_all == True:
-                        #     print(searcher[0].get_text()[coin_symbol:])
-                        string_price = searcher[0].get_text().replace(coin_symbol,'')
-                        string_price = string_price.split()
-                        price[b] = float(string_price[0])
+                        price_string = searcher[0].get_text().split(tps)
+                        if test_all == True:
+                            print(price_string)
+                        price_string = price_string[0].replace(coin_symbol,'').replace(k_sep,'').replace(d_sep,'.')
+                        if test_all == True:
+                            print(price_string) 
+                        #Ebays Special case
+                        price_string = price_string.replace('\xa0','')
+                        price[b] = float(price_string)
                     except:
-                        error_message = f'''String index out of range. 
-                        Coin Symbol: {coin_symbol}
-                        Coin dictionary: {coins_dict}
+                        error_message = f'''Info about the Value. 
+                        Money dictionary: {money_dict}
                         Original String: {searcher[0].get_text()}
+                        Price string: {price_string}
                         Box #{b}'''
                         raise ValueError(error_message)                        
-                elif country == 'br':
-                    try:
-                        price[b] = float(searcher[0].get_text()[coin_symbol:].replace('.','').replace(',','.'))
-                    except:
-                        pass
             b +=1
 
     if test_all == True:

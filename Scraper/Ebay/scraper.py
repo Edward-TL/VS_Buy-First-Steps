@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     #All the HTML of the page
     ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
-    
+
 
     # #HTML divided by products, and stored as elements of an array
     ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
@@ -49,6 +49,6 @@ if __name__ == "__main__":
     cheapest_idx = cheapest(ebay_products['prices'])
     cheapest_ebay_product2 = get_cheapest(cheapest_idx, ebay_products)
 
-    print(f'\n\nTest TWO:')
+    print(f'\nTest ONE:')
     for key in cheapest_ebay_product2:
         print(key, ':', cheapest_ebay_product2[key])

@@ -84,8 +84,11 @@ class Products:
         self.products_links = products_links
         self.prices = prices
 
-coins_dict = {'mx':'MXN $',
-                'br':'BR $',}
+money_dict = {'mx' : {'coin' : 'MXN $',
+                      'thousands': ' ',
+                      'decimal': '.',
+                      'two_prices_sep' : ' a '}
+            }
 
 Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
     url_replacers=('{user_request}'),
