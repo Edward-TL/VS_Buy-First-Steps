@@ -13,15 +13,16 @@ def cheapest(array_prices, just_position=True, just_price=False, position_and_pr
 
     for n in range(len(array_prices)):
         price = array_prices[n]
-        if test == True:
-            print(f'number = {n} cheapest_price is {cheapest_price} and price check is {price}')
-
-        if price < cheapest_price:
+        if price:
             if test == True:
-                print(f'price: {price} < {cheapest_price}')
+                print(f'number = {n} cheapest_price is {cheapest_price} and price check is {price}')
 
-            cheapest_price = price
-            cheapest_position = n
+            if price < cheapest_price:
+                if test == True:
+                    print(f'price: {price} < {cheapest_price}')
+
+                cheapest_price = price
+                cheapest_position = n
         
     if position_and_price == True:
         just_position = False
