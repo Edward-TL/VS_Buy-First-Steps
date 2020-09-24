@@ -1,61 +1,54 @@
-from data import Mercado_Libre
+from data import Ebay
 from cheapest_funcs import cheapest, get_cheapest
 from scrape_funcs import extract_soup, search_boxes, get_brute_info
 
 from page_getters import get_names, get_images, get_products_urls, get_price
 
-def scraper(user_request, country):
+def scraper(Page, user_request, country):
     #Adapt the url
-    ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+    url = Page.adapt_url(Page, country, user_request)
 
     #All the HTML of the page
-    ml_soup = extract_soup(ml_url, 1, just_soup=True)
+    soup = extract_soup(url, 1, just_soup=True)
 
     # #HTML divided by products, and stored as elements of an array
-    ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
+    boxes = search_boxes(soup, Page.boxes)
 
     # From this part, could get better AFTER the 4 scrapers are made
     #From the Boxes, obtain the prices
-    meli_prices= get_price(country, ml_boxes, Mercado_Libre.price)
+    prices= get_price(country, boxes, Page.price)
 
     #Obtain the cheapest from prices and then, you obtain the cheapest product as a dictionary
-    meli_cheapest_idx, meli_cheapest_price = cheapest(meli_prices, position_and_price=True)
-    cheapest_ml_product_dictionary = get_cheapest(meli_cheapest_idx, ml_boxes, meli_cheapest_price, country, Mercado_Libre)
+    cheapest_idx, cheapest_price = cheapest(prices, position_and_price=True)
+    cheapest_product_dictionary = get_cheapest(cheapest_idx, boxes, cheapest_price, country, Page)
 
-    return cheapest_ml_product_dictionary
+    return cheapest_product_dictionary
 
 if __name__ == "__main__":
     user_request = 'audifonos inalambricos'
     country = 'mx'
-    ml_url = Mercado_Libre.adapt_url(Mercado_Libre, country, user_request)
+    ebay_url = Ebay.adapt_url(Ebay, user_request)
 
     #All the HTML of the page
-    ml_soup = extract_soup(ml_url, 1, just_soup=True)
-
+    ebay_soup = extract_soup(ebay_url, 1, just_soup=True)
+    
 
     # #HTML divided by products, and stored as elements of an array
-    ml_boxes = search_boxes(ml_soup, Mercado_Libre.boxes)
-    print(f'Test ONE:')
-    meli_prices= get_price(country, ml_boxes, Mercado_Libre.price)
+    ebay_boxes = search_boxes(ebay_soup, Ebay.boxes)
+    # print(ebay_boxes)
 
-    meli_cheapest_idx, meli_cheapest_price = cheapest(meli_prices, position_and_price=True)
-    cheapest_ml_product_1 = get_cheapest(meli_cheapest_idx, ml_boxes, meli_cheapest_price, country, Mercado_Libre)
+    ebay_products = {}
 
-    for key in cheapest_ml_product_1:
-        print(key, ':', cheapest_ml_product_1[key])
+    ebay_products['names'] = get_names(ebay_boxes, Ebay.name_and_images)
+    # #Ebay's images source (link)
+    ebay_products['images'] = get_images(ebay_boxes, Ebay, test_len=True)
 
-    # print('boxes:', len(ml_boxes))
-    ml_products = {}
+    # ebay_products['urls'] = get_products_urls(ebay_boxes, Ebay.product_urls)
+    # ebay_products['prices'] = get_price(country, ebay_boxes, Ebay.price)
 
-    ml_products['names'] = get_names(ml_boxes, Mercado_Libre.name_and_images)
-    #Mercado_Libre's images source (link)
-    ml_products['images'] = get_images(ml_boxes, Mercado_Libre.name_and_images)
-    ml_products['urls'] = get_products_urls(ml_boxes, Mercado_Libre.product_urls)
-    ml_products['prices'] = get_price(country, ml_boxes, Mercado_Libre.price)
+    # cheapest_idx = cheapest(ebay_products['prices'])
+    # cheapest_ebay_product2 = get_cheapest(cheapest_idx, ebay_products)
 
-    cheapest_idx = cheapest(ml_products['prices'])
-    cheapest_ml_product2 = get_cheapest(cheapest_idx, ml_products)
-
-    print(f'\n\nTest TWO:')
-    for key in cheapest_ml_product2:
-        print(key, ':', cheapest_ml_product2[key])
+    # print(f'\n\nTest TWO:')
+    # for key in cheapest_ebay_product2:
+    #     print(key, ':', cheapest_ebay_product2[key])
