@@ -61,9 +61,8 @@ class Page:
     
     def adapt_url(self, Page, user_request, country_domain=None):
         check = str(type(Page.url_replacers))
-        if country_domain  and check != "<class 'str'>":
-            if country_domain[0] != ".":
-                country_domain = '.' + country_domain
+        if country_domain[0] != ".":
+            country_domain = '.' + country_domain
         
         
         if check != "<class 'str'>":
