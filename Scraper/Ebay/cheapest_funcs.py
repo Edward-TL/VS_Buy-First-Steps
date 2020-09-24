@@ -9,11 +9,13 @@ def ordered_dict(dictionary, reverse=True):
 
 def cheapest(array_prices, just_position=True, just_price=False, position_and_price=False, test=False):
     cheapest_position = 0
-    cheapest_price = array_prices[0]
-
+    cheapest_price = None
+    
     for n in range(len(array_prices)):
         price = array_prices[n]
         if price:
+            if cheapest_price == None:
+                cheapest_price = price
             if test == True:
                 print(f'number = {n} cheapest_price is {cheapest_price} and price check is {price}')
 

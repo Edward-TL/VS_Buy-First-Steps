@@ -41,14 +41,14 @@ if __name__ == "__main__":
 
     ebay_products['names'] = get_names(ebay_boxes, Ebay.name_and_images)
     # #Ebay's images source (link)
-    ebay_products['images'] = get_images(ebay_boxes, Ebay, test_len=True)
+    ebay_products['images'] = get_images(ebay_boxes, Ebay)
 
-    # ebay_products['urls'] = get_products_urls(ebay_boxes, Ebay.product_urls)
-    # ebay_products['prices'] = get_price(country, ebay_boxes, Ebay.price)
+    ebay_products['urls'] = get_products_urls(ebay_boxes, Ebay.product_urls)
+    ebay_products['prices'] = get_price(country, ebay_boxes, Ebay.price)
 
-    # cheapest_idx = cheapest(ebay_products['prices'])
-    # cheapest_ebay_product2 = get_cheapest(cheapest_idx, ebay_products)
+    cheapest_idx = cheapest(ebay_products['prices'])
+    cheapest_ebay_product2 = get_cheapest(cheapest_idx, ebay_products)
 
-    # print(f'\n\nTest TWO:')
-    # for key in cheapest_ebay_product2:
-    #     print(key, ':', cheapest_ebay_product2[key])
+    print(f'\n\nTest TWO:')
+    for key in cheapest_ebay_product2:
+        print(key, ':', cheapest_ebay_product2[key])

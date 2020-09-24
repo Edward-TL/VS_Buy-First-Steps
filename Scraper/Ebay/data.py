@@ -84,7 +84,7 @@ class Products:
         self.products_links = products_links
         self.prices = prices
 
-coins_dict = {'mx':1,
+coins_dict = {'mx':5,
                 'br':2,}
 
 Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
@@ -92,12 +92,12 @@ Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
     space_replacer=['+'],
     boxes=('li', 'class', 's-item'),
     highlights=('span', 'class', 'ui-search-item__highlight-label__text'),
-    product_urls=('div', 'class', 'ui-search-result__image'),
+    product_urls=('div', 'class', 's-item__image'),
     name_and_images=('div', 'class', 's-item__image-wrapper'),
     images_get=('src'),
     reviews=None,
     stars=None,
-    price=('span', 'class', 'price-tag ui-search-price__part'),)
+    price=('span', 'class', 's-item__price'),)
 
 if __name__ == '__main__':
     url = Ebay.adapt_url(Ebay, 'audifonos inalambricos')
