@@ -34,7 +34,7 @@ class headers:
 
 class Page:
     def __init__(self, url, url_replacers, space_replacer ,boxes, highlights,
-    product_urls, name_and_images, reviews, stars, price):
+    product_urls, name_and_images, images_get, reviews, stars, price):
         '''Page URl with name of the format replacers'''
         self.url = url 
 
@@ -53,6 +53,7 @@ class Page:
         self.product_urls = product_urls
         # self.product_id = product_id
         self.name_and_images = name_and_images
+        self.images_get = images_get
         self.reviews = reviews
         self.stars = stars
         self.price = price
@@ -89,10 +90,11 @@ coins_dict = {'mx':1,
 Ebay = Page(url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
     url_replacers=('{user_request}'),
     space_replacer=['+'],
-    boxes=('div', 'class', 'ui-search-result__wrapper'),
+    boxes=('li', 'class', 's-item'),
     highlights=('span', 'class', 'ui-search-item__highlight-label__text'),
     product_urls=('div', 'class', 'ui-search-result__image'),
-    name_and_images=('div', 'class', 'slick-slide slick-active'),
+    name_and_images=('div', 'class', 's-item__image-wrapper'),
+    images_get=('src'),
     reviews=None,
     stars=None,
     price=('span', 'class', 'price-tag ui-search-price__part'),)
