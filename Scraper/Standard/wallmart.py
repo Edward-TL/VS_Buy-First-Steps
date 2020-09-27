@@ -1,18 +1,13 @@
 from bs4 import BeautifulSoup
 import re
 
-#All Selenium stuff 
-#https://openwebinars.net/blog/como-hacer-web-scraping-con-selenium/
-import zipfile
-import os
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-# from selenium import WebElement
 
 #VS_Buy Package
-from data import headers
-from scrape_funcs import extract_soup
+from data import headers, Wallmart
+from scrape_funcs import extract_soup, search_boxes
 
 
 if __name__ == '__main__':
@@ -25,6 +20,15 @@ if __name__ == '__main__':
 
     selenium_html = driver.page_source
     selenium_soup = BeautifulSoup(selenium_html)
-    print(selenium_soup.prettify())
+    
+
+    page_boxes = search_boxes(selenium_soup, Wallmart.boxes)
+    # From this part, could get better AFTER the 4 scrapers are made
+    #From the Boxes, obtain the prices
+    price_boxes = get_price(country, page_boxes, Page, test_len=True)
+    #Obtain the cheapest from prices and then, you obtain the cheapest product as a dictionary
+    cheapest_idx, cheapest_price = cheapest(price_boxes, position_and_price=True)
+    cheapest_product_dictionary = get_cheapest(cheapest_idx, page_boxes, cheapest_price, country, Page)
+
 
     driver.close()
