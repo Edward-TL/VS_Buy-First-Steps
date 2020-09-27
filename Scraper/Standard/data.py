@@ -137,6 +137,31 @@ Wallmart = Page(name = 'Wallmart',
     #product_id('data-asin')
     )
 
+best_buy_money_dict = {'mx' : {'coin' : '$',
+                      'thousands': ',',
+                      'decimal': '.',
+                      'two_prices_sep' : ' - '}
+}
+
+Best_Buy = Page(name = 'Wallmart',
+    url='https://www.bestbuy.com{country}/c/buscar-best-buy/buscar?query={user_request}',
+    url_replacers=('{country}', '{user_request}'),
+    space_replacer=['+'],
+    boxes=('div', 'class', 'product-line-item-line'),
+    highlights=None,
+    product_urls=('a', None, None),
+    url_get='href',
+    name_and_images=('div', 'class', 'col-xs-3 image-container'),
+    names_get='alt',
+    images_get='src',
+    reviews=None,
+    stars=None,
+    price=('div', 'class', 'product-price'),
+    money_dict=best_buy_money_dict,
+    #product_id('data-asin')
+    )
+
+
 class headers:
     wallmart = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                 'accept-encoding':'gzip, deflate, br',
