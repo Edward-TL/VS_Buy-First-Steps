@@ -108,11 +108,11 @@ def get_products_urls(boxes_array, Page, test_all=False, test_len=False, positio
             if searcher:
                 if test_all == True:
                     print(searcher[0].get(url))
-            if Page.__name__ == 'Amazon':
+            if Page.name == 'Amazon':
                 source_url = searcher[0].get(url)
                 urls[b] = 'https://www.amazon.com.mx' + source_url
                 
-            if Page.__name__ == 'Ebay' or Page.__name__ == 'Mercado Libre':
+            if Page.name == 'Ebay' or Page.name == 'Mercado Libre':
                 urls[b] = searcher[0].a.get(url)
             b +=1
 
