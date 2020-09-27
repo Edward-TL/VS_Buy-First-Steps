@@ -1,30 +1,35 @@
-from bs4 import BeautifulSoup
-import re
+from data import Best_Buy
+from cheapest_funcs import cheapest, get_cheapest
+from scrape_funcs import extract_soup, search_boxes, get_brute_info
 
-#All Selenium stuff 
-#https://openwebinars.net/blog/como-hacer-web-scraping-con-selenium/
-import zipfile
-import os
-import selenium
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-# from selenium import WebElement
-
-#VS_Buy Package
-from data import headers
-from scrape_funcs import extract_soup
+from page_getters import get_names, get_images, get_products_urls, get_price
 
 
 if __name__ == '__main__':
-    wallmart_url = 'https://www.walmart.com.mx/productos?Ntt=xbox%20one%20consola'
-    # driver = webdriver.PhantomJS(executable_path = "/usr/local/Cellar/phantomjs/2.1.1/bin/phantomjs")
-    driver = webdriver.Chrome("chromedriver.exe")
-    
-    # driver = webdriver.PhantomJS()
-    driver.get(wallmart_url)
+    user_request = 'lavadoras'
+    country = 'mx'
+    best_buy_url = Best_Buy.adapt_url(Best_Buy, user_request, country)
 
-    selenium_html = driver.page_source
-    selenium_soup = BeautifulSoup(selenium_html)
-    print(selenium_soup.prettify())
+    #All the HTML of the page
+    best_buy_soup = extract_soup(best_buy_url, 1, just_soup=True)
 
-    driver.close()
+
+    # #HTML divided by products, and stored as elements of an array
+    best_buy_boxes = search_boxes(best_buy_soup, Best_Buy.boxes)
+    # print(best_buy_boxes)
+
+    best_buy_products = {}
+
+    best_buy_products['names'] = get_names(best_buy_boxes, Best_Buy)
+    # #Best_Buy's images source (link)
+    best_buy_products['images'] = get_images(best_buy_boxes, Best_Buy)
+
+    best_buy_products['urls'] = get_products_urls(best_buy_boxes, Best_Buy)
+    best_buy_products['prices'] = get_price(country, best_buy_boxes, Best_Buy)
+
+    cheapest_idx = cheapest(best_buy_products['prices'])
+    cheapest_best_buy_product2 = get_cheapest(cheapest_idx, best_buy_products)
+
+    print(f'\nTest ONE:')
+    for key in cheapest_best_buy_product2:
+        print(key, ':', cheapest_best_buy_product2[key])
