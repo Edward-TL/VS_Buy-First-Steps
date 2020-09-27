@@ -21,7 +21,7 @@ def extract_soup(url, header=0, just_status=False, just_soup=False):
         return soup, status
 
 def search_boxes(soup, box_tuple, cents=False):
-
+    #Search the kind of box specified by the touple
     if cents == True:
         boxes = soup.find(box_tuple[0], attrs={box_tuple[1] : box_tuple[2]})
     else:
