@@ -22,7 +22,15 @@ def get_names(boxes_array, Page, test_all=False, test_len=False, position=None):
             #Remember that boxes are arrays
             searcher = search_boxes(box, Page.name_and_images)
             if searcher:
-                names[b] = searcher[0].img.get(name)
+                try:
+                    names[b] = searcher[0].img.get(name)
+                except:
+                    name_message_error = f'''Value info:
+                    box: {box}
+                    Searcher: {searcher}
+                    Searcher[0].img = {searcher[0].img}'''
+
+                    raise ValueError(name_message_error)
                 
             b +=1
     if test_all == True:
@@ -56,7 +64,6 @@ def get_images(boxes_array, Page, test_all=False, test_len=False, position=None)
             b +=1
 
     if test_all == True:
-        print(searcher[0].img)
         print(images)
     
     elif test_len == True:
