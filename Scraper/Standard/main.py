@@ -1,4 +1,4 @@
-from data import Amazon, Ebay, Mercado_Libre
+from data import Amazon, Ebay, Mercado_Libre, Best_Buy
 from scrape_funcs import extract_soup, search_boxes
 from page_getters import get_price
 from cheapest_funcs import cheapest, get_cheapest
@@ -20,10 +20,10 @@ def scrap_cheapest(user_request, Page, country='mx'):
     return cheapest_product_dictionary
 
 if __name__ == '__main__':
-    user_request = 'almohadillas audifonos marshall bluetooth major III'
-    pages = [Amazon, Ebay, Mercado_Libre]
+    user_request = 'cortadora de cabello electrica Wahl'
+    pages = [Amazon, Mercado_Libre, Ebay, Best_Buy]
     for page in pages:
-        print(f'Searching {user_request} in -> {page.__name__}')
+        print(f'Searching {user_request} in -> {page.name}')
         cheapest_dict = scrap_cheapest(user_request, page)
         for key in cheapest_dict:
             print(key,':', cheapest_dict[key])

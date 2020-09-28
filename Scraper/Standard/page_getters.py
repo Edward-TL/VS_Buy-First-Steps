@@ -4,15 +4,21 @@ import re
 def get_names(boxes_array, Page, test_all=False, test_len=False, position=None):
     names = [None]*len(boxes_array)
     name = Page.names_get
+
     if test_all == True:
             print(f'Boxes array len: {len(boxes_array)}')
 
     '''If you know want to know some info of an specific product by its position on the page.
     Like you know the position of the cheapest'''
-    if position:
+    if position != None:
         searcher = search_boxes(boxes_array[position], Page.name_and_images)
         if searcher:
-            names = searcher[0].img.get(name)
+            if Page.name == 'Best Buy':
+                image_name = searcher[0].img.get(name)
+                name_split = image_name.split(' - ')
+                names = name_split[1]
+            else:
+                names = searcher[0].img.get(name)
     else:
         '''For Testing the functions and Xpaths'''
         b=0
@@ -23,7 +29,12 @@ def get_names(boxes_array, Page, test_all=False, test_len=False, position=None):
             searcher = search_boxes(box, Page.name_and_images)
             if searcher:
                 try:
-                    names[b] = searcher[0].img.get(name)
+                    if Page.name == 'Best Buy':
+                        image_name = searcher[0].img.get(name)
+                        name_split = image_name.split(' - ')
+                        names[b] = name_split[1]
+                    else:
+                        names[b] = searcher[0].img.get(name)
                 except:
                     name_message_error = f'''Value info:
                     box: {box}
@@ -74,18 +85,19 @@ def get_images(boxes_array, Page, test_all=False, test_len=False, position=None)
 def get_products_urls(boxes_array, Page, test_all=False, test_len=False, position=None):
     urls = [None]*len(boxes_array)
     url = Page.url_get
-
+    if test_all == True:
+        print('Urls:')
     '''If you know want to know some info of an specific product by its position on the page.
     Like you know the position of the cheapest'''
     if position:
         searcher = search_boxes(boxes_array[position], Page.product_urls)
         if searcher:
             try:
-                if Page.__name__ == 'Amazon':
+                if Page.name == 'Amazon':
                     source_url = searcher[0].get(url)
                     position_url = 'https://www.amazon.com.mx' + source_url
                     
-                if Page.__name__ == 'Ebay' or Page.__name__ == 'Mercado Libre':
+                else:
                     position_url = searcher[0].a.get(url)
                 
                 urls = position_url
@@ -103,17 +115,19 @@ def get_products_urls(boxes_array, Page, test_all=False, test_len=False, positio
         '''For Testing the functions and Xpaths'''
         b=0
         for box in boxes_array:
+            if test_all == True:
+                print('For loop:')
             #Remember that boxes are arrays
             searcher = search_boxes(box, Page.product_urls)
             if searcher:
                 if test_all == True:
-                    print(searcher[0].get(url))
-            if Page.name == 'Amazon':
-                source_url = searcher[0].get(url)
-                urls[b] = 'https://www.amazon.com.mx' + source_url
-                
-            if Page.name == 'Ebay' or Page.name == 'Mercado Libre':
-                urls[b] = searcher[0].a.get(url)
+                    print(searcher[0].a)
+                if Page.name == 'Amazon':
+                    source_url = searcher[0].get(url)
+                    urls[b] = 'https://www.amazon.com.mx' + source_url
+                    
+                else:
+                    urls[b] = searcher[0].a.get(url)
             b +=1
 
     if test_all == True:

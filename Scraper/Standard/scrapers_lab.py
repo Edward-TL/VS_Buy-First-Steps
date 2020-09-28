@@ -6,7 +6,7 @@ from page_getters import get_names, get_images, get_products_urls, get_price
 
 
 if __name__ == '__main__':
-    user_request = 'lavadoras'
+    user_request = 'audifonos inalambricos major III bluetooth'
     country = 'mx'
     best_buy_url = Best_Buy.adapt_url(Best_Buy, user_request, country)
 
@@ -20,12 +20,12 @@ if __name__ == '__main__':
 
     best_buy_products = {}
 
-    best_buy_products['names'] = get_names(best_buy_boxes, Best_Buy)
+    best_buy_products['names'] = get_names(best_buy_boxes, Best_Buy, test_all=True)
     # #Best_Buy's images source (link)
-    best_buy_products['images'] = get_images(best_buy_boxes, Best_Buy)
+    best_buy_products['images'] = get_images(best_buy_boxes, Best_Buy, test_all=True)
 
-    best_buy_products['urls'] = get_products_urls(best_buy_boxes, Best_Buy)
-    best_buy_products['prices'] = get_price(country, best_buy_boxes, Best_Buy)
+    best_buy_products['urls'] = get_products_urls(best_buy_boxes, Best_Buy, test_all=True)
+    best_buy_products['prices'] = get_price(country, best_buy_boxes, Best_Buy, test_all=True)
 
     cheapest_idx = cheapest(best_buy_products['prices'])
     cheapest_best_buy_product2 = get_cheapest(cheapest_idx, best_buy_products)

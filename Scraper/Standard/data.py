@@ -4,7 +4,8 @@ from dataclasses import dataclass
 class Page:
     name:str
     '''Page URl with name of the format replacers'''
-    url : str
+    url : str      
+    page_test : str
     '''Tuple with the name of the replacers'''
     url_replacers : tuple
     '''string that will replace the space of the users request on a search'''
@@ -26,7 +27,7 @@ class Page:
     price : tuple
     highlights : tuple
     '''dictionary'''
-    money_dict : dict      
+    money_dict : dict
     
     def adapt_url(self, Page, user_request, country_domain):
         check = str(type(Page.url_replacers))
@@ -53,6 +54,7 @@ amazon_money_dict = {'mx' : {'coin' : '$',
 
 Amazon = Page(name = 'Amazon',
     url='https://www.amazon.com{country}/s?k={user_request}',
+    page_test='https://www.amazon.com.mx/s?k=audifonos+inalambricos',
     url_replacers=('{country}', '{user_request}'),
     space_replacer=['+'],
     boxes=('div', 'data-component-type', 's-search-result'),
@@ -77,6 +79,7 @@ ebay_money_dict = {'mx' : {'coin' : 'MXN $',
 
 Ebay = Page(name='Ebay',
     url='https://www.ebay.com/sch/i.html?_nkw={user_request}',
+    page_test='https://www.ebay.com/sch/i.html?_nkw=audifonos+inalambricos',
     url_replacers=('{user_request}'),
     space_replacer=['+'],
     boxes=('li', 'class', 's-item'),
@@ -99,6 +102,7 @@ meli_money_dict = {'mx' : {'coin' : '$',
             
 Mercado_Libre = Page(name='Mercado Libre',
     url='https://listado.mercadolibre.com{country}/{user_request_1}#D[A:{user_request_2}]',
+    page_test='https://listado.mercadolibre.com.mx/audifonos-inalambricos#D[A:audifonos%20inalambricos]',
     url_replacers=('{country}', '{user_request_1}', '{user_request_2}'),
     space_replacer=['-','%20'],
     boxes=('div', 'class', 'ui-search-result__wrapper'),
@@ -113,29 +117,29 @@ Mercado_Libre = Page(name='Mercado Libre',
     price=('span', 'class', 'price-tag ui-search-price__part'),
     money_dict=meli_money_dict,)
 
-wallmart_money_dict = {'mx' : {'coin' : '$',
-                      'thousands': ',',
-                      'decimal': '.',
-                      'two_prices_sep' : ' - '}
-}
+# wallmart_money_dict = {'mx' : {'coin' : '$',
+#                       'thousands': ',',
+#                       'decimal': '.',
+#                       'two_prices_sep' : ' - '}
+# }
 
-Wallmart = Page(name = 'Wallmart',
-    url='https://www.walmart.com{country}/productos?Ntt={user_request}',
-    url_replacers=('{country}', '{user_request}'),
-    space_replacer=['%20'],
-    boxes=('div', 'class', 'grid_product__30OQa'),
-    highlights=None,
-    product_urls=('a', 'class', 'nav-link_navLink__2oJ29 product_image__LcsAj'),
-    url_get='href',
-    name_and_images=('span', 'class', 'lazyload-wrapper'),
-    names_get='alt',
-    images_get='src',
-    reviews=None,
-    stars=None,
-    price=('p', 'data-automation-id', 'sale-price'),
-    money_dict=wallmart_money_dict,
-    #product_id('data-asin')
-    )
+# Wallmart = Page(name = 'Wallmart',
+#     url='https://www.walmart.com{country}/productos?Ntt={user_request}',
+#     url_replacers=('{country}', '{user_request}'),
+#     space_replacer=['%20'],
+#     boxes=('div', 'class', 'grid_product__30OQa'),
+#     highlights=None,
+#     product_urls=('a', 'class', 'nav-link_navLink__2oJ29 product_image__LcsAj'),
+#     url_get='href',
+#     name_and_images=('span', 'class', 'lazyload-wrapper'),
+#     names_get='alt',
+#     images_get='src',
+#     reviews=None,
+#     stars=None,
+#     price=('p', 'data-automation-id', 'sale-price'),
+#     money_dict=wallmart_money_dict,
+#     #product_id('data-asin')
+#     )
 
 best_buy_money_dict = {'mx' : {'coin' : '$',
                       'thousands': ',',
@@ -143,13 +147,14 @@ best_buy_money_dict = {'mx' : {'coin' : '$',
                       'two_prices_sep' : ' - '}
 }
 
-Best_Buy = Page(name = 'Wallmart',
+Best_Buy = Page(name = 'Best Buy',
     url='https://www.bestbuy.com{country}/c/buscar-best-buy/buscar?query={user_request}',
+    page_test='https://www.bestbuy.com.mx/c/buscar-best-buy/buscar?query=audifonos+inalambricos',
     url_replacers=('{country}', '{user_request}'),
     space_replacer=['+'],
     boxes=('div', 'class', 'product-line-item-line'),
     highlights=None,
-    product_urls=('a', None, None),
+    product_urls=('div', 'class', 'product-title'),
     url_get='href',
     name_and_images=('div', 'class', 'col-xs-3 image-container'),
     names_get='alt',
