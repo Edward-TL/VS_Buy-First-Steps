@@ -20,7 +20,7 @@ def scrap_cheapest(user_request, Page, country='mx'):
     return cheapest_product_dictionary
 
 if __name__ == '__main__':
-    user_request = 'cortadora de cabello electrica Wahl'
+    user_request = 'audifonos inalambricos Marshall major III bluetooth'
     pages = [Amazon, Mercado_Libre, Ebay, Best_Buy]
     for page in pages:
         print(f'Searching {user_request} in -> {page.name}')

@@ -166,6 +166,7 @@ Best_Buy = Page(name = 'Best Buy',
     #product_id('data-asin')
     )
 
+Pages = [Amazon, Mercado_Libre, Ebay, Best_Buy]
 
 class headers:
     wallmart = {'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
