@@ -1,9 +1,9 @@
-#Web Manage
+# Web Manage
 from bs4 import BeautifulSoup
 import requests
 import re
 
-#Personal
+# Personal
 from data import headers
 
 def extract_soup(url, header=0, just_status=False, just_soup=False):
@@ -20,8 +20,11 @@ def extract_soup(url, header=0, just_status=False, just_soup=False):
     else:
         return soup, status
 
+
+# Search the kind of box specified by the touple
+# Cents is a bug in some pages that returns the cents in another box.
+# don't worry, if you fill all, this won't stop you
 def search_boxes(soup, box_tuple, cents=False):
-    #Search the kind of box specified by the touple
     if cents == True:
         boxes = soup.find(box_tuple[0], attrs={box_tuple[1] : box_tuple[2]})
     else:
@@ -29,8 +32,8 @@ def search_boxes(soup, box_tuple, cents=False):
 
     return boxes
 
+# Returns the brute text from the html depending of the info you asked
 def get_brute_info(boxes_array, info_tuple):
-    '''Returns the brute text from the html depending of the info you asked'''
     info = [None]*len(boxes_array)
     searcher = None
     i=0
